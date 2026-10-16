@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geolocation App</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:100vh;
+        background:linear-gradient(135deg,#4facfe,#00f2fe);
+    }
+
+    .container{
+        background:#fff;
+        padding:30px;
+        border-radius:15px;
+        text-align:center;
+        box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        width:350px;
+    }
+
+    h2{
+        margin-bottom:20px;
+        color:#333;
+    }
+
+    button{
+        padding:12px 20px;
+        border:none;
+        background:#007bff;
+        color:white;
+        border-radius:8px;
+        cursor:pointer;
+        font-size:16px;
+    }
+
+    button:hover{
+        background:#0056b3;
+    }
+
+    #output{
+        margin-top:20px;
+        text-align:left;
+        word-wrap:break-word;
+    }
+
+    .success{
+        color:green;
+    }
+
+    .error{
+        color:red;
+    }
+
+    a{
+        color:#007bff;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>?? Find My Location</h2>
+
+    <button onclick="getLocation()">
+        Get Location
+    </button>
+
+    <div id="output"></div>
+</div>
+
+<script>
+function getLocation() {
+    const output = document.getElementById("output");
+
+    if (!navigator.geolocation) {
+        output.innerHTML =
+            "<p class='error'>Geolocation is not supported by your browser.</p>";
+        return;
+    }
+
+    output.innerHTML = "<p>Getting your location...</p>";
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            output.innerHTML = `
+                <p class="success"><b>Location Found!</b></p>
+                <p><b>Latitude:</b> ${lat}</p>
+                <p><b>Longitude:</b> ${lon}</p>
+                <p>
+                    <a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank">
+                        Open in Google Maps
+                    </a>
+                </p>
+            `;
+        },
+        (error) => {
+            output.innerHTML =
+                `<p class="error">Error: ${error.message}</p>`;
+        }
+    );
+}
+</script>
+
+</body>
+</html>
